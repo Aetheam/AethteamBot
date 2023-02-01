@@ -1,7 +1,5 @@
 import {BaseEvent, EventName} from "../BaseEvent";
-import {ClientEvents, EmbedBuilder, TextChannel} from "discord.js";
 import {Index} from "../../index";
-import UserModel from "../../models/UserModel";
 import {teamUpdate} from "../../api/task";
 
 export default class Ready extends BaseEvent{
@@ -11,7 +9,7 @@ export default class Ready extends BaseEvent{
 
     }
 
-    public once: boolean = true;
+    public once = true;
     async execute(): Promise<void> {
         await Index.instance.CommandsLoader.register()
         await teamUpdate();
