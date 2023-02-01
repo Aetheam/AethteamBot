@@ -1,16 +1,17 @@
 import {
     ActionRowBuilder,
-    ButtonBuilder,
+    ButtonBuilder, ButtonInteraction,
     ButtonStyle,
     Collection,
     EmbedBuilder,
     Guild, GuildMember,
-    Message,
+    Message, PermissionsBitField,
     TextChannel
 } from "discord.js";
 import {Index} from "../index";
 import  config from "../config.json";
 import {EmojiList} from "./EmojiList";
+import {getStringEnv} from "./EnvVariable";
 
 export const ticketMessage = async () => {
     const guild: Guild = await Index.instance.getGuild()
@@ -46,8 +47,9 @@ export const ticketMessage = async () => {
     }
 }
 
-export const createTicket = function (guildMember: GuildMember) {
-    let embeds: EmbedBuilder = new EmbedBuilder()
+export const createTicket = async function (guildMember: GuildMember, interaction: ButtonInteraction) {
+    const guild = await Index.instance.getGuild();
+    const embeds: EmbedBuilder = new EmbedBuilder()
         .setTitle("Ticket de " + guildMember.user.username)
         .setTimestamp(new Date())
         .setDescription("Bienvenue\n" +
@@ -60,6 +62,32 @@ export const createTicket = function (guildMember: GuildMember) {
                 .setCustomId('ticket:close')
                 .setLabel('fermer le ticket')
                 .setEmoji(EmojiList.base_ticket)
-                .setStyle(ButtonStyle.Primary),
+                .setStyle(ButtonStyle.Danger),
         );
+    const roles = await config.ticket.open.access_roles.map(role => {
+        return {
+            id: role,
+            allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages,PermissionsBitField.Flags.AttachFiles, PermissionsBitField.Flags.EmbedLinks, PermissionsBitField.Flags.ManageMessages]
+        }
+    })
+    guild.channels.create({
+        name: "Ticket de " + guildMember.user.username,
+        parent: config.ticket.open.category,
+        permissionOverwrites: [
+            {
+                id: <string> getStringEnv("GUILD_ID"),
+                deny: [PermissionsBitField.Flags.ViewChannel,PermissionsBitField.Flags.SendMessages]
+            },
+            {
+                id: guildMember.user.id,
+                allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages,PermissionsBitField.Flags.AttachFiles]
+            },
+            ...roles
+        ]
+
+    }).then((r) => {
+        r.send({embeds: [embeds], components: [row]})
+        interaction.reply({content: "ton ticket à bien été ouvert regarde <#" + r.id  + ">", ephemeral: true})
+    })
+
 }

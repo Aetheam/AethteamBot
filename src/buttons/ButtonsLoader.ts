@@ -22,7 +22,6 @@ export default class ButtonsLoader {
                 this.button.set(buttons.buttonId, buttons);
             }
         }
-        console.log(this.button)
     }
     async listener(){
         Index.instance.on("interactionCreate", interaction => {

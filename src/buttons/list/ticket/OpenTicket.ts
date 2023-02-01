@@ -6,6 +6,6 @@ export default class OpenTicket extends BaseButtons{
     public buttonId = "ticket:open"
 
     async buttonExecute(button: ButtonInteraction): Promise<void> {
-        createTicket(<GuildMember>button.member)
+        await createTicket(<GuildMember>button.member, button)
     }
 }
