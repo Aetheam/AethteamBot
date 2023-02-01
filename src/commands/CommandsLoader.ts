@@ -13,8 +13,8 @@ export default class CommandsLoader{
     async loader(): Promise<void>{
         const files = readdirSync(`${__dirname}/list`).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
         for (const file of files) {
-            let importFile = await import("./list/" + file);
-            let command: BaseCommands =  new importFile.default();
+            const importFile = await import("./list/" + file);
+            const command: BaseCommands =  new importFile.default();
             this.commands.set(command.name, command);
         }
     }
@@ -22,7 +22,7 @@ export default class CommandsLoader{
     async listener(): Promise<void>{
         Index.instance.on("interactionCreate", interaction => {
             if (interaction.isChatInputCommand()) {
-                let command = this.commands.get(interaction.commandName);
+                const command = this.commands.get(interaction.commandName);
                 if (command) command.execute(interaction);
             }else if (interaction.isButton()){
 
