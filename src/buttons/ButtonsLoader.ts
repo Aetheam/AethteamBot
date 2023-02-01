@@ -1,6 +1,6 @@
 import {ButtonBuilder, Collection} from "discord.js";
 import BaseButtons from "./BaseButtons";
-import {readdirSync} from "fs";
+import {lstatSync, readdirSync} from "fs";
 import BaseCommands from "../commands/BaseCommands";
 import {Index} from "../index";
 
@@ -8,16 +8,21 @@ export default class ButtonsLoader {
 
     public readonly button: Collection<string, BaseButtons> = new Collection();
     constructor() {
-        this.loader().then(() => this.listener() )
+        this.loader(`${__dirname}/list`).then(() => this.listener() )
     }
 
-    async loader(){
-        const files = readdirSync(`${__dirname}/list`).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
+    async loader(path: string){
+        const files = readdirSync(path);
         for (const file of files) {
-            const importFile = await import("./list/" + file);
-            const buttons: BaseButtons =  new importFile.default();
-            this.button.set(buttons.buttonId, buttons);
+            if (lstatSync(path + "/" + file).isDirectory()){
+                await this.loader(path + "/" + file)
+            }else {
+                const importFile = await import(path + "\\" + file);
+                const buttons: BaseButtons =  new importFile.default();
+                this.button.set(buttons.buttonId, buttons);
+            }
         }
+        console.log(this.button)
     }
     async listener(){
         Index.instance.on("interactionCreate", interaction => {

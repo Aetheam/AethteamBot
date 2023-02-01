@@ -4,12 +4,13 @@ import {
     ButtonStyle,
     Collection,
     EmbedBuilder,
-    Guild,
+    Guild, GuildMember,
     Message,
     TextChannel
 } from "discord.js";
 import {Index} from "../index";
 import  config from "../config.json";
+import {EmojiList} from "./EmojiList";
 
 export const ticketMessage = async () => {
     const guild: Guild = await Index.instance.getGuild()
@@ -43,5 +44,22 @@ export const ticketMessage = async () => {
             }
         }
     }
+}
 
+export const createTicket = function (guildMember: GuildMember) {
+    let embeds: EmbedBuilder = new EmbedBuilder()
+        .setTitle("Ticket de " + guildMember.user.username)
+        .setTimestamp(new Date())
+        .setDescription("Bienvenue\n" +
+            "afin de facilitée la prise de votre commande, veuillez décrire au mieux votre demande.\n" +
+            "elle sera prise en charge rapidement. \n\n" +
+            "si cela concerne le recrutement, merci de mentionner <@883693434693619732> pour avoir plus d'informations.")
+    const row = new ActionRowBuilder<ButtonBuilder>()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId('ticket:close')
+                .setLabel('fermer le ticket')
+                .setEmoji(EmojiList.base_ticket)
+                .setStyle(ButtonStyle.Primary),
+        );
 }
