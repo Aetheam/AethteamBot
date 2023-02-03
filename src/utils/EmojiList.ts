@@ -7,5 +7,6 @@ export enum EmojiList {
     discord_js = "<:discord_js:1069325512998146178> ",
     pack_maker ="<:treasurechest:1069323674697617508> ",
     map_maker = "<:developer:1068896874481848320> ",
-    base_ticket = "<:base_ticket:1069310227977097338>"
+    base_ticket = "<:base_ticket:1069310227977097338>",
+    gif_green_certif="<a:7916verifygreen:1069312543430037635> "
 }

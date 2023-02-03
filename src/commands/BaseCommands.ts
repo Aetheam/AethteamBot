@@ -12,6 +12,6 @@ export default abstract class BaseCommands {
         return this.slashCommand.description;
     }
 
-    public abstract execute(command: ChatInputCommandInteraction): Promise<void>;
+     public abstract execute(command: ChatInputCommandInteraction): Promise<void>;
 
 }

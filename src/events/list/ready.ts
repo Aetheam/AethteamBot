@@ -15,15 +15,17 @@ export default class Ready extends BaseEvent{
         await Index.instance.CommandsLoader.register()
         await teamUpdate();
         await ticketMessage();
-        let result =  await fetch("https://api.github.com/orgs/Aetheam/repos", {
+        /*
+        const result =  await fetch("https://api.github.com/orgs/Aetheam/repos", {
             headers: {
                 'authorization': 'Bearer ' + getStringEnv("GITHUB_TOKEN"),
                 'content-type': 'application/json',
                 'X-GitHub-Api-Version': '2022-11-28'
             }
         })
-        let q = await result.json()
-        console.log(q)
+         */
+
+
     }
 
 }
