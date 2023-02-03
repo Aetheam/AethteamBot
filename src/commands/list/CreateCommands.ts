@@ -22,6 +22,10 @@ export default class CreateCommands extends BaseCommands{
             .setDescription("pseudo du vendeur")
             .setRequired(true))
         .addStringOption(new SlashCommandStringOption()
+            .setName("command-name")
+            .setDescription("Nom de la commande")
+            .setRequired(true))
+        .addStringOption(new SlashCommandStringOption()
             .setName("command-description")
             .setDescription("mettez ici la description de la commande")
             .setRequired(true))
@@ -35,9 +39,10 @@ export default class CreateCommands extends BaseCommands{
         const sellerMention = command.options.getMentionable("vendeur")
         const price = command.options.getInteger("prix")
         const commandDescription = command.options.getString("command-description")
+        const commandName= command.options.getString("command-name")
         const channel = <TextChannel>command.channel
         const embed = new EmbedBuilder()
-            .setTitle("Création d'une nouvelle commande")
+            .setTitle("Création d'une nouvelle commande: `" + commandName +"`")
             .setDescription(`Prix: ${price} <:dollard:1070865328734736394>  \n
                  Vendeur: ${sellerMention} \n
                  Client: ${clientMention} \n
@@ -55,7 +60,9 @@ export default class CreateCommands extends BaseCommands{
                 channelId: channel.id,
                 clientId: clientMention.user.id,
                 sellerId: sellerMention.user.id,
-                price: price
+                price: price,
+                commandsName: commandName,
+                commandsDescription: commandDescription
             }).save()
             await command.reply({embeds: [embed], components: [row]})
         }

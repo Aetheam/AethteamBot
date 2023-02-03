@@ -3,6 +3,7 @@ import {ButtonInteraction, GuildMember, TextChannel, User, Webhook} from "discor
 import CommandsModel from "../../../models/CommandsModel";
 import internal from "stream";
 import {promises} from "dns";
+import {createRepository} from "../../../api/github";
 
 export default class ConfirmCommands extends BaseButtons{
     buttonId= "commandes:confirmCommands"
@@ -36,7 +37,9 @@ export default class ConfirmCommands extends BaseButtons{
                     name: 'suivis',
                     avatar: 'https://cdn.discordapp.com/icons/915046808009441323/4b6015718f87bfdd9041ac0b7c8b5032.png?size=1024',
                 }).then(w => {
-                   console.log(w.url)
+                    result.webhookUrl = w.url;
+                    result.save()
+                  createRepository(result.commandsName, "test", w.url)
                 })
             }
         } else {
