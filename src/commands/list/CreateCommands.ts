@@ -36,7 +36,6 @@ export default class CreateCommands extends BaseCommands{
         const price = command.options.getInteger("prix")
         const commandDescription = command.options.getString("command-description")
         const channel = <TextChannel>command.channel
-        return
         const embed = new EmbedBuilder()
             .setTitle("Création d'une nouvelle commande")
             .setDescription(`Prix: ${price} <:dollard:1070865328734736394>  \n
