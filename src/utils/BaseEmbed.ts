@@ -1,13 +1,21 @@
-import {Colors, EmbedBuilder} from "discord.js";
+import {Colors, EmbedBuilder, TextChannel} from "discord.js";
 import {PipelineStage} from "mongoose";
+import {Index} from "../index";
 
 
-export const errorEmbed = (message: string): EmbedBuilder => {
+export const errorEmbed = async (message: string): Promise<EmbedBuilder> => {
+
     return new EmbedBuilder()
         .setTitle("Erreur")
         .setDescription(message)
         .setTimestamp(new Date())
         .setColor(Colors.Red)
+}
+export const messageLogger = async (message: string): Promise<void> => {
+    const guild = await Index.instance.getGuild();
+    const channel = <TextChannel>guild.channels.cache.get("1071161023354126359")
+
+    await channel.send({content: "```json\n" + message + "\n```"})
 }
 export const successEmbed = (message: string): EmbedBuilder => {
     return new EmbedBuilder()

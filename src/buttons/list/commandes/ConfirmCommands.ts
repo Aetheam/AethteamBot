@@ -39,7 +39,7 @@ export default class ConfirmCommands extends BaseButtons{
                 }).then(w => {
                     result.webhookUrl = w.url;
                     result.save()
-                  createRepository(result.commandsName, "test", w.url)
+                  createRepository(result.commandsName, result.commandsDescription, w.url, result.channelId)
                 })
             }
         } else {
