@@ -4,7 +4,7 @@ import {
     ChatInputCommandInteraction,
     EmbedBuilder, GuildMember,
     SlashCommandBuilder, SlashCommandIntegerOption,
-    SlashCommandMentionableOption, SlashCommandStringOption
+    SlashCommandMentionableOption, SlashCommandStringOption, TextChannel
 } from "discord.js";
 import {EmojiList} from "../../utils/EmojiList";
 import CommandsModel from "../../models/CommandsModel";
@@ -15,22 +15,28 @@ export default class CreateCommands extends BaseCommands{
         .setDescription("Commencer une commande")
         .addMentionableOption(new SlashCommandMentionableOption()
             .setName("client")
-            .setDescription("pseudo du client"))
+            .setDescription("pseudo du client")
+                .setRequired(true))
         .addMentionableOption(new SlashCommandMentionableOption()
             .setName("vendeur")
-            .setDescription("pseudo du vendeur"))
+            .setDescription("pseudo du vendeur")
+            .setRequired(true))
         .addStringOption(new SlashCommandStringOption()
             .setName("command-description")
-            .setDescription("mettez ici la description de la commande"))
+            .setDescription("mettez ici la description de la commande")
+            .setRequired(true))
         .addIntegerOption(new SlashCommandIntegerOption()
             .setName("prix")
-            .setDescription("Prix de la commande"))
+            .setDescription("Prix de la commande")
+            .setRequired(true))
 
     async execute(command: ChatInputCommandInteraction): Promise<void> {
         const clientMention  = command.options.getMentionable("client")
         const sellerMention = command.options.getMentionable("vendeur")
         const price = command.options.getInteger("prix")
         const commandDescription = command.options.getString("command-description")
+        const channel = <TextChannel>command.channel
+        return
         const embed = new EmbedBuilder()
             .setTitle("Création d'une nouvelle commande")
             .setDescription(`Prix: ${price} <:dollard:1070865328734736394>  \n
@@ -47,6 +53,7 @@ export default class CreateCommands extends BaseCommands{
             );
         if (clientMention instanceof GuildMember && sellerMention instanceof GuildMember){
             await new CommandsModel({
+                channelId: channel.id,
                 clientId: clientMention.user.id,
                 sellerId: sellerMention.user.id,
                 price: price

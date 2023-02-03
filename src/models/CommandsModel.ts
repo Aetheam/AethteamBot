@@ -1,6 +1,7 @@
 import mongoose, {model, Schema} from "mongoose";
 
 interface CommandsModel {
+    channelId: string,
     clientId: string,
     sellerId: string,
     price: mongoose.Types.Decimal128
@@ -8,6 +9,10 @@ interface CommandsModel {
     clientConfirm: boolean
 }
 const CommandsShema = new Schema<CommandsModel>({
+    channelId:{
+        type: "string",
+        required: true
+    },
     clientId: {
         type: "string",
         required: true
