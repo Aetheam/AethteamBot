@@ -6,7 +6,8 @@ interface CommandsModel {
     sellerId: string,
     price: mongoose.Types.Decimal128
     sellerConfirm: boolean
-    clientConfirm: boolean
+    clientConfirm: boolean,
+    webhookUrl: string
 }
 const CommandsShema = new Schema<CommandsModel>({
     channelId:{
@@ -32,6 +33,10 @@ const CommandsShema = new Schema<CommandsModel>({
     clientConfirm: {
         type: "boolean",
         default: false
+    },
+    webhookUrl:{
+        type: "string",
+        default: null
     }
 })
 export default model<CommandsModel>("commandes", CommandsShema)
