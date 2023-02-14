@@ -29,8 +29,7 @@ export const teamUpdate = async () => {
         const pocketminejob = pocketmineRole.members.map((member: GuildMember) => {
             return member
         })
-
-        let phpApiJob = "";
+        
         let jsApiJob = "";
         let mapMakerJob = "";
         let packMakerJob = "";
