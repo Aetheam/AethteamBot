@@ -25,7 +25,7 @@ export class Index extends Client {
         Index.instance = this;
         try{
             mongoose.set('strictQuery', false);
-            mongoose.connect(getStringEnv("MONGO_URL")).then(r => console.log("Connection à la base de donnée réussie"))
+            mongoose.connect(getStringEnv("MONGO_URL")).then(() => console.log("Connection à la base de donnée réussie"))
         }catch (Exception){
             console.log(Exception)
         }

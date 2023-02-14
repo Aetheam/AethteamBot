@@ -17,7 +17,7 @@ export default class ButtonsLoader {
             if (lstatSync(path + "/" + file).isDirectory()){
                 await this.loader(path + "/" + file)
             }else {
-                const importFile = await import(path + "\\" + file);
+                const importFile = await import(path + "/" + file);
                 const buttons: BaseButtons =  new importFile.default();
                 this.button.set(buttons.buttonId, buttons);
             }

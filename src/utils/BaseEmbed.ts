@@ -30,7 +30,7 @@ export const updateEmbed = (message: string): EmbedBuilder => {
         .setDescription(message)
 }
 export const updateProfileEmbed = (username: string, job: string[], githubName: string, paypal: string | null, commandCount: number, commandsInProgress: number): EmbedBuilder => {
-    let fields = [
+    const fields = [
         {name:"username", value: `${username}`, inline: true},
         {name: "job", value: `${job}` ,inline: true},
         {name:"github", value: `${githubName}`,  inline: true}

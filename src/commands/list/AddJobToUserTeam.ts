@@ -25,19 +25,19 @@ export default class AddJobToUserTeam extends BaseCommands {
                 )
                 .setRequired(true)})
     async execute(command: ChatInputCommandInteraction): Promise<void> {
-       let job: string = <string>command.options.getString("job")
-        let mention = command.options.getMentionable("membre")
+       const job: string = <string>command.options.getString("job")
+        const mention = command.options.getMentionable("membre")
         if (mention instanceof GuildMember){
-            let result = await userModel.findOne({discordId: mention.user.id});
+            const result = await userModel.findOne({discordId: mention.user.id});
             if (!result){
-                await command.reply({embeds: [errorEmbed("l'utilisateur mentionné ne fais pas partis de la team")]})
+                await command.reply({embeds: [await errorEmbed("l'utilisateur mentionné ne fais pas partis de la team")]})
                 return;
             }
-            let verif: boolean = true;
-            result.userJob.map(jobs=> {
-                if (jobs === job){
+            let verif = true;
+            result.userJob.map(async jobs => {
+                if (jobs === job) {
                     verif = false;
-                    command.reply({embeds: [errorEmbed("Le job spécifié est déja sur cette personne")]})
+                    await command.reply({embeds: [await errorEmbed("Le job spécifié est déja sur cette personne")]})
                     return;
                 }
             })
