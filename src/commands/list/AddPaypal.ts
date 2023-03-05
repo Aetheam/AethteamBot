@@ -7,7 +7,7 @@ import {
     SlashCommandStringOption
 } from "discord.js";
 import UserModel from "../../models/UserModel";
-import {errorEmbed, successEmbed, updateEmbed, updateProfileEmbed} from "../../utils/BaseEmbed";
+import {errorEmbed, updateProfileEmbed} from "../../utils/BaseEmbed";
 
 export default class AddPaypal extends BaseCommands{
     public readonly slashCommand = new SlashCommandBuilder()
@@ -22,13 +22,13 @@ export default class AddPaypal extends BaseCommands{
             .setDescription("Utilisateur à ajouter")
             .setRequired(true))
     async execute(command: ChatInputCommandInteraction): Promise<void>{
-        let member = command.options.getMentionable("membre");
-        let paypal = <string>command.options.getString("paypal");
+        const member = command.options.getMentionable("membre");
+        const paypal = <string>command.options.getString("paypal");
         if (member instanceof GuildMember) {
-            let userId = member.user.id;
-            let result = await UserModel.findOne({discordId: userId});
+            const userId = member.user.id;
+            const result = await UserModel.findOne({discordId: userId});
             if (!result) {
-                await command.reply({embeds: [errorEmbed("L'utilisateur n'est pas enregistrer. merci de l'enregister en faisant la commande /add_to_team")]})
+                await command.reply({embeds: [await errorEmbed("L'utilisateur n'est pas enregistrer. merci de l'enregister en faisant la commande /add_to_team")]})
             } else {
                 result.paypal = paypal;
                 await result.save();
