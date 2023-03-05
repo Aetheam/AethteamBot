@@ -2,8 +2,7 @@ import BaseCommands from "../BaseCommands";
 import {
     ChatInputCommandInteraction, GuildMember,
     SlashCommandBuilder,
-    SlashCommandMentionableOption,
-    SlashCommandStringOption
+    SlashCommandMentionableOption
 } from "discord.js";
 import UserModel from "../../models/UserModel";
 import {errorEmbed, successEmbed} from "../../utils/BaseEmbed";
@@ -17,14 +16,16 @@ export default class RemoveToTeam extends BaseCommands {
             .setDescription("le nom du membre que vous souhaitez retirer"))
 
     async execute(command: ChatInputCommandInteraction) {
-        let mention = command.options.getMentionable("member");
+        const mention = command.options.getMentionable("member");
         if (mention instanceof GuildMember){
-            let result = await UserModel.findOne({discordId: mention.user.id})
+            const result = await UserModel.findOne({discordId: mention.user.id})
             if (!result){
-                await command.reply({embeds: [errorEmbed("l'utilisateur mentionné ne fais pas partis de la team.")]})
+                const embed = await errorEmbed("l'utilisateur mentionné ne fais pas partis de la team.")
+                await command.reply({embeds: [embed]});
             }else {
                 result.delete();
-                await command.reply({embeds: [successEmbed("L'utilisateur mentionné ne fais plus à présent partis de la team.")]})
+                const emb = successEmbed("L'utilisateur mentionné ne fais plus à présent partis de la team.");
+                await command.reply({embeds: [emb]})
             }
         }
     }

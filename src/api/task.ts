@@ -10,7 +10,7 @@ export const teamUpdate = async () => {
     setInterval(async () => {
         const messages: Collection<string, Message<true>> = await channel.messages.fetch()
         await guild.members.fetch()
-        const roles: string[] = ["956859176045404161", "956859174908723210"];
+        const roles: string[] = ["956859176045404161", "956859174908723210","1075140197047615528"];
         for (const r of roles) {
             const role = guild.roles.cache.get(r);
             if (!role) {
@@ -20,6 +20,7 @@ export const teamUpdate = async () => {
         }
         const discordJsRole = <Role>guild.roles.cache.get("956859176045404161");
         const pocketmineRole = <Role>guild.roles.cache.get("956859174908723210");
+        const jsApiRole = <Role>guild.roles.cache.get("1075140197047615528");
 
         const Jobfields = []
 
@@ -30,8 +31,8 @@ export const teamUpdate = async () => {
             return member
         })
 
-        let phpApiJob = "";
-        let jsApiJob = "";
+        const jsApiJob = jsApiRole.members.map((member: GuildMember) => {return member});
+        
         let mapMakerJob = "";
         let packMakerJob = "";
 
@@ -45,6 +46,13 @@ export const teamUpdate = async () => {
         if (discordJsJob.length > 0) {
             Jobfields.push({
                 name: EmojiList.discord_js + "discord.js", value: discordJsJob.map(m => {
+                    return EmojiList.multicolor_arrow + m.user.username
+                }).join("\n"), inline: true
+            })
+        }
+        if (jsApiJob.length > 0){
+            Jobfields.push({
+                name: EmojiList.js_api + "javascript API", value: jsApiJob.map(m => {
                     return EmojiList.multicolor_arrow + m.user.username
                 }).join("\n"), inline: true
             })
